@@ -1,0 +1,21 @@
+body{
+	font-family: Helvetica, Arial, sans-serif;
+}
+
+.sidebar{
+	width: 29%;
+	display: inline-block;
+}
+
+.main{
+	width: 70%;
+	display: inline-block;
+}
+
+.row{
+	width: 100%;
+}
+
+.main ul li{
+	margin: 10px;
+}
