@@ -171,5 +171,53 @@ app.post('/search', function(request, response){
 	});
 });
 
+
+
+
+
+
+
+
+
+
+
+
+function TweetQuery(keyword, lat, lon){
+	this.keyword = keyword;
+	this.lat = lat;
+	this.lon = lon;
+	this.time = new Date();
+	this.setTime = function(setTime){
+		this.time = setTime;
+	};
+}
+
+app.post('/new', function(request, response){
+	var tq = new TweetQuery(
+		decodeURI(request.body.keyword),
+		decodeURI(request.body.lat),
+		decodeURI(request.body.lon)
+		);
+	//TODO: something with this
+	response.send({
+		success: (tq !== undefined)
+	});
+});
+
+
+app.get('/tweet', function(request, response){
+	var query = new TweetQuery(
+		decodeURI(request.query.keyword),
+		decodeURI(request.query.lat),
+		decodeURI(request.query.lon)
+		);
+	query.setTime(request.query.time);
+
+	response.send({
+		success: (query !== undefined)
+	});
+});
+
+
 app.listen(8889);
 //console.log('Express server started on port %s', app.address().port);

@@ -143,6 +143,36 @@ function get(keyword){
 
 
 
+
+
+
+
+
+function sendQuery(keyword, lat, lon){
+	$.ajax({
+		type: "post",
+		url: "/new",
+		data:{
+			"keyword": keyword,
+			"lat": lat,
+			"lon": lon
+		},
+		datatype: "json",
+		success: function(data){
+			console.log("query sent successfully");
+		}
+	});
+}
+
+function getTweet(){
+	$.ajax({
+		type: "get",
+		url:"/tweet",
+
+	});
+}
+
+
 $(document).ready(function(){
 	//post("kanye");
 	$("#submitButton").click(function(){
