@@ -1,0 +1,27 @@
+
+canvas {
+	/*border: 4px solid #ff00d5;*/
+}
+
+#latlng-control {
+	background: #ffc;
+	border: 1px solid #444444;
+	font-family: arial, helvetica, sans-serif;
+	font-size: 0.7em;
+	padding: 2px 4px;
+	position: absolute;
+}
+
+html { 
+	height: 100% 
+}
+
+body { 
+	height: 100%; 
+	margin: 0; 
+	padding: 0; 
+}
+
+#map_canvas { 
+	height: 100%; 
+}
