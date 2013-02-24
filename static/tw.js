@@ -183,5 +183,5 @@ $(document).ready(function(){
 		//get($("#query-input").val());
 		//post($("#query-input").val());
 	});
-	//getLocation();
+	getLocation();
 });

@@ -40,7 +40,6 @@ function TweetQuery(keyword, lat, lon){
 	// }
 // };
 
-
 function trendsGetter(){
 	console.log("Getting some trends...............................................");
 	var options = {
@@ -127,7 +126,7 @@ function venueGetter(query, callback2){
 				str += chunk;
 			}
 			
-			responseJSON += chunk;
+			//responseJSON += chunk;
 		});
 
 		response.on('end', function(){
@@ -186,7 +185,7 @@ app.post('/new', function(request, response){
 		response.send({
 			//data: parseData(str),
 			success: (str !== undefined)
-		});	
+		});
 	});
 });
 
