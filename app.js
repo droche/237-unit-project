@@ -12,7 +12,8 @@ app.get("/static/:filename", function(request, response){
 });
 
 var requestQuery;
-var latestTweet = 0;
+var lastTweet = 0;
+var tweets;
 
 var fsclientId = "VU0DICU13IR5L5YWZ23OGBCIMSUA2CCQILVXMV2QRQGRGKHN";
 var fsclientSecret = "3UB2V5MNWB0QUCGNA5DDIH05YU0BSOOE0DI05GISLLWWGN0D";
@@ -20,6 +21,15 @@ var fsclientSecret = "3UB2V5MNWB0QUCGNA5DDIH05YU0BSOOE0DI05GISLLWWGN0D";
 var twclientId = "Bt2qpXMrCsbctcTSwxVU8Q";
 var twclientSecret = "j2EweBmhK7cknxr3WvIAZLl1SjVs7YmDKd0k66okVdA";
 
+function TweetQuery(keyword, lat, lon){
+	this.keyword = keyword;
+	this.lat = lat;
+	this.lon = lon;
+	this.time = new Date();
+	this.setTime = function(setTime){
+		this.time = setTime;
+	};
+}
 // var options = {
 	// host: 'search.twitter.com',
 	// port: 443,
@@ -31,17 +41,44 @@ var twclientSecret = "j2EweBmhK7cknxr3WvIAZLl1SjVs7YmDKd0k66okVdA";
 // };
 
 
-function tweetGetter(callBack2){
+function trendsGetter(){
+	console.log("Getting some trends...............................................");
+	var options = {
+		host: 'api.twitter.com',
+		path: "/1.1/trends/12763673.json?",
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json'
+		}
+	};
+	console.log("path option: " + options.path);
+	callback = function(response){
+		console.log("Trends callback");
+		var trendsStr = '';
+		response.on('data', function(chunk){
+			if(chunk){
+				trendsStr += chunk;
+			}
+		});
+
+		response.on('end', function(){
+			console.log(trendsStr);
+			callBack2(trendsStr);
+		});
+
+		// console.log(http.request(options, callback));
+	};
+	// return http.request(options, callback).end();
+	return https.request(options, callback).end();
+}
+
+
+function tweetGetter(tq, callBack2){
 	console.log("current query " + requestQuery);
+	
 	var options = {
 		host: 'search.twitter.com',
-		path: "/search.json?q=" + requestQuery + "&rpp=100&geocode=37.781157,-122.398720,25mi",
-		// host: 'api.twitter.com',
-		// path: "/1.1/trends/place.json?id=" + requestQuery + "&rpp=100",
-		// path: "api.twitter.com/1.1/trends/place.json?id="+requestQuery,
-		//path: "https://api.twitter.com/1.1/trends/place.json?id=1",
-	//	host: 'search.twitter.com',
-		// path: "/search.json?rpp=100&q=" + requestQuery,
+		path: "/search.json?q=" + tq.keyword + "&result_type=mixed&rpp=100&geocode=" + tq.lat + "," + tq.lon + ",25mi",
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json'
@@ -54,9 +91,7 @@ function tweetGetter(callBack2){
 		response.on('data', function(chunk){
 			if(chunk){
 				str += chunk;
-				// responseJSON += chunk;
 			}
-			// responseJSON += chunk;
 		});
 
 		response.on('end', function(){
@@ -69,6 +104,7 @@ function tweetGetter(callBack2){
 	return https.request(options, callback).end();
 
 }
+
 
 function venueGetter(query, callback2){
 	console.log("current query" + query);
@@ -111,14 +147,13 @@ function venueGetter(query, callback2){
 app.get('/search/:keyword', function(request, response){
 	requestQuery = request.params.keyword;
 	tweetGetter(function(str){
-		console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		//console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		response.send({
 			data: parseData(str),
 			success: (str !== undefined)
 		});
 	});
 });
-
 
 
 app.get('/venues/search', function(request, response){
@@ -136,30 +171,43 @@ app.get('/venues/search', function(request, response){
 	});
 });
 
-// app.get('/search', function(request, response){
-	// console.log("********Le response JSON*******" + responseJSON);
-	// if(responseJSON.substring(0,5) === 'false'){
-		// responseJSON = responseJSON.substring(5);
-	// }
-	// response.send({
-		// data: responseJSON,
-		// success: (responseJSON !== undefined)
-	// });
-// });
+
+
+app.post('/new', function(request, response){
+	var tq = new TweetQuery(
+		request.body.keyword,
+		request.body.lat,
+		request.body.lon
+		);
+	tweetGetter(tq, function(str){
+		console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		parseData(str);
+		trendsGetter();
+		response.send({
+			//data: parseData(str),
+			success: (str !== undefined)
+		});	
+	});
+});
+
+
+app.get('/tweet', function(request, response){
+
+	response.send({
+		data: tweets,
+		success: (tweets !== undefined)
+	});
+});
+
+
 
 function parseData(str){
-	// if(responseJSON.substring(0,5) === 'false'){
-		// responseJSON = responseJSON.substring(5);
-	// }
-	// else if (responseJSON.substring(0,9) === 'undefined'){
-		// responseJSON = responseJSON.substring(9);
-	// }
 	console.log(str);
-	str = JSON.parse(str);
-	return str;
+	tweets = JSON.parse(str);
+	lastTweet = tweets.max_id_str;
+	//return tweets;
 	
 }
-
 
 app.post('/search', function(request, response){
 	requestQuery = request.body.query;

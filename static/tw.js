@@ -141,13 +141,46 @@ function get(keyword){
 	});
 }
 
+function sendQuery(keyword, lat, lon){
+	$.ajax({
+		type: "post",
+		url: "/new",
+		data:{
+			"keyword": keyword,
+			"lat": lat,
+			"lon": lon
+		},
+		datatype: "json",
+		success: function(data){
+			getTweet();
+			//console.log("query sent successfully");
+		}
+	});
+}
+
+function getTweet(){
+	$.ajax({
+		type: "get",
+		url:"/tweet",
+		datatype: "json",
+		success: function(data){
+			response = data.data;
+			console.log(response);
+			refreshDOM();
+		},
+		error: function(msg){
+			console.log("error:" + msg);
+		}
+	});
+}
 
 
 $(document).ready(function(){
 	//post("kanye");
 	$("#submitButton").click(function(){
 		console.log($("#query-input").val());
-		get($("#query-input").val());
+		sendQuery($("#query-input").val(),37.781157,-122.398720);
+		//get($("#query-input").val());
 		//post($("#query-input").val());
 	});
 	//getLocation();
