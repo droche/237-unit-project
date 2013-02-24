@@ -168,7 +168,9 @@ function getTweet(){
 	$.ajax({
 		type: "get",
 		url:"/tweet",
+		success: function(data){
 
+		}
 	});
 }
 
