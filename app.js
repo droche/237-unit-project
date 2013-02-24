@@ -21,10 +21,12 @@ var fsclientSecret = "3UB2V5MNWB0QUCGNA5DDIH05YU0BSOOE0DI05GISLLWWGN0D";
 var twclientId = "Bt2qpXMrCsbctcTSwxVU8Q";
 var twclientSecret = "j2EweBmhK7cknxr3WvIAZLl1SjVs7YmDKd0k66okVdA";
 
-function TweetQuery(keyword, lat, lon){
+function TweetQuery(keyword, lat, lon, radius){
 	this.keyword = keyword;
 	this.lat = lat;
 	this.lon = lon;
+	this.radius = radius;
+	console.log(this.radius);
 	this.time = new Date();
 	this.setTime = function(setTime){
 		this.time = setTime;
@@ -46,7 +48,7 @@ function tweetGetter(tq, callBack2){
 	
 	var options = {
 		host: 'search.twitter.com',
-		path: "/search.json?q=" + encodeURI(tq.keyword) + "&result_type=mixed&rpp=100&geocode=" + tq.lat + "," + tq.lon + ",25mi",
+		path: "/search.json?q=" + encodeURI(tq.keyword) + "&result_type=mixed&rpp=100&geocode=" + tq.lat + "," + tq.lon + "," + tq.radius + "km",//",25mi",
 		//path: "/search.json?q=from:BarackObama&rpp=100",
 		method: 'GET',
 		headers: {
@@ -146,8 +148,11 @@ app.post('/new', function(request, response){
 	var tq = new TweetQuery(
 		request.body.keyword,
 		request.body.lat,
-		request.body.lon
+		request.body.lon,
+		request.body.radius
 		);
+		
+	console.log(tq.radius+"<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
 	tweetGetter(tq, function(str){
 		console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		parseData(str);

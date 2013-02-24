@@ -1,15 +1,18 @@
 body{
 	font-family: Helvetica, Arial, sans-serif;
+	z-index: 3;
 }
 
 .sidebar{
 	width: 29%;
-	display: inline-block;
+	position: fixed;
+	z-index: 3;
 }
 
 .main{
 	width: 70%;
-	display: inline-block;
+	position: fixed;
+	z-index: 3;
 }
 
 .row{

@@ -143,14 +143,15 @@ function get(keyword){
 	});
 }
 
-function sendQuery(keyword, lat, lon){
+function sendQuery(keyword, lat, lon, radius){
 	$.ajax({
 		type: "post",
 		url: "/new",
 		data:{
 			"keyword": keyword,
 			"lat": lat,
-			"lon": lon
+			"lon": lon,
+			"radius": radius
 		},
 		datatype: "json",
 		success: function(data){
@@ -181,7 +182,9 @@ $(document).ready(function(){
 	//post("kanye");
 	$("#submitButton").click(function(){
 		console.log($("#query-input").val());
-		sendQuery($("#query-input").val(),37.781157,-122.398720);
+		//sendQuery($("#query-input").val(),37.781157,-122.398720,25km);
+		console.log(radiusStart.lat(),radiusStart.lng());
+		//sendQuery($("#query-input").val(),radiusStart.lat(),radiusStart.lng());
 		//get($("#query-input").val());
 		//post($("#query-input").val());
 	});
