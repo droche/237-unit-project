@@ -58,6 +58,8 @@ function refreshDOM(){
 	console.log("refreshDOM!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" );//+ response);
 	$(response.results).each(function(i,tweet){
 		var liEl = $("<li>").html(tweet.text);
+		var userID = $("<h3>").html(tweet.from_user_name).css("font-weight","bold");
+		liEl.append(userID);
 		$('#tweetcontainer').append(liEl);
 	});
 	//$("#tweetcontainer").append(response.results);

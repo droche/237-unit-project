@@ -41,44 +41,13 @@ function TweetQuery(keyword, lat, lon){
 // };
 
 
-function trendsGetter(){
-	console.log("Getting some trends...............................................");
-	var options = {
-		host: 'api.twitter.com',
-		path: "/1.1/trends/12763673.json?",
-		method: 'GET',
-		headers: {
-			'Content-Type': 'application/json'
-		}
-	};
-	console.log("path option: " + options.path);
-	callback = function(response){
-		console.log("Trends callback");
-		var trendsStr = '';
-		response.on('data', function(chunk){
-			if(chunk){
-				trendsStr += chunk;
-			}
-		});
-
-		response.on('end', function(){
-			console.log(trendsStr);
-			callBack2(trendsStr);
-		});
-
-		// console.log(http.request(options, callback));
-	};
-	// return http.request(options, callback).end();
-	return https.request(options, callback).end();
-}
-
-
 function tweetGetter(tq, callBack2){
 	console.log("current query " + requestQuery);
 	
 	var options = {
 		host: 'search.twitter.com',
-		path: "/search.json?q=" + tq.keyword + "&result_type=mixed&rpp=100&geocode=" + tq.lat + "," + tq.lon + ",25mi",
+		path: "/search.json?q=" + encodeURI(tq.keyword) + "&result_type=mixed&rpp=100&geocode=" + tq.lat + "," + tq.lon + ",25mi",
+		//path: "/search.json?q=from:BarackObama&rpp=100",
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json'
@@ -182,7 +151,6 @@ app.post('/new', function(request, response){
 	tweetGetter(tq, function(str){
 		console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		parseData(str);
-		trendsGetter();
 		response.send({
 			//data: parseData(str),
 			success: (str !== undefined)
