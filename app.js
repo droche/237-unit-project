@@ -15,11 +15,20 @@ var requestQuery;
 var lastTweet = 0;
 var tweets;
 
+var tweetList = [];
+
 var fsclientId = "VU0DICU13IR5L5YWZ23OGBCIMSUA2CCQILVXMV2QRQGRGKHN";
 var fsclientSecret = "3UB2V5MNWB0QUCGNA5DDIH05YU0BSOOE0DI05GISLLWWGN0D";
 
 var twclientId = "Bt2qpXMrCsbctcTSwxVU8Q";
 var twclientSecret = "j2EweBmhK7cknxr3WvIAZLl1SjVs7YmDKd0k66okVdA";
+
+function Tweet(id, text, username, image){
+	this.id = id;
+	this.text = text;
+	this.username = username;
+	this.image = image;
+}
 
 function TweetQuery(keyword, lat, lon, radius){
 	this.keyword = keyword;
@@ -156,10 +165,11 @@ app.post('/new', function(request, response){
 	tweetGetter(tq, function(str){
 		console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		parseData(str);
+
 		response.send({
-			//data: parseData(str),
+			data: tweetList,
 			success: (str !== undefined)
-		});	
+		});
 	});
 });
 
@@ -167,8 +177,8 @@ app.post('/new', function(request, response){
 app.get('/tweet', function(request, response){
 
 	response.send({
-		data: tweets,
-		success: (tweets !== undefined)
+		data: tweetList,
+		success: (tweetList !== undefined)
 	});
 });
 
@@ -178,6 +188,9 @@ function parseData(str){
 	console.log(str);
 	tweets = JSON.parse(str);
 	lastTweet = tweets.max_id_str;
+	for(var tweet in tweets.results){
+		tweetList[tweet] = new Tweet(tweets.results[tweet].id_str, tweets.results[tweet].text, tweets.results[tweet].from_user_name, tweets.results[tweet].profile_image_url);
+	}
 	//return tweets;
 	
 }
