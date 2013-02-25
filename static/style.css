@@ -1,12 +1,17 @@
 body{
 	font-family: Helvetica, Arial, sans-serif;
+<<<<<<< HEAD
 	
+=======
+	z-index: 3;
+>>>>>>> hope this works!
 }
 
 .sidebar{
 	width: 29%;
 	position: fixed;
 	z-index: 3;
+<<<<<<< HEAD
 	right: 0;
 	top: 10em;
 	width: 8em;
@@ -21,6 +26,14 @@ body{
 	height: 100%;
 	background-color: white;
 	overflow:scroll;
+=======
+}
+
+.main{
+	width: 70%;
+	position: fixed;
+	z-index: 3;
+>>>>>>> hope this works!
 }
 
 .row{
@@ -29,5 +42,8 @@ body{
 
 .main ul li{
 	margin: 10px;
+<<<<<<< HEAD
 	z-index: 3;
+=======
+>>>>>>> hope this works!
 }

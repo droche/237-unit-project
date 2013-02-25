@@ -60,7 +60,11 @@ function refreshDOM(){
 		var liEl = $("<li>").html(tweet.text);
 		var userID = $("<h3>").html(tweet.from_user_name).css("font-weight","bold");
 		liEl.append(userID);
+<<<<<<< HEAD
 		$('#tweetcontainer').prepend(liEl);
+=======
+		$('#tweetcontainer').append(liEl);
+>>>>>>> hope this works!
 	});
 	//$("#tweetcontainer").append(response.results);
 	// var listItem;
