@@ -54,14 +54,14 @@ function getLocation(){
 	return loc;
 }
 
-function refreshDOM(){
+function refreshDOM(tweet){
 	console.log("refreshDOM!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" );//+ response);
-	$(response.results).each(function(i,tweet){
-		var liEl = $("<li>").html(tweet.text);
-		var userID = $("<h3>").html(tweet.from_user_name).css("font-weight","bold");
-		liEl.append(userID);
-		$('#tweetcontainer').prepend(liEl);
-	});
+	// $(response.results).each(function(i,tweet){
+		// var liEl = $("<li>").html(tweet.text);
+		// var userID = $("<h3>").html(tweet.from_user_name).css("font-weight","bold");
+		// liEl.append(userID);
+		// $('#tweetcontainer').prepend(liEl);
+	// });
 	//$("#tweetcontainer").append(response.results);
 	// var listItem;
 	// var paraItem;
@@ -83,6 +83,11 @@ function refreshDOM(){
 		// listItem.append(paraItem);
 		// $("#tweetcontainer").append(listItem);
 	//}
+	//var liEl = $("<li>").html(tweet.text);
+	var liEl = $("<li>").html(tweet);
+	//var userID = $("<h3>").html(tweet.from_user_name).css("font-weight","bold");
+	//liEl.append(userID);
+	$('#tweetcontainer').prepend(liEl);
 }
 
 
@@ -155,7 +160,7 @@ function sendQuery(keyword, lat, lon, radius){
 		},
 		datatype: "json",
 		success: function(data){
-			getTweet();
+			setInterval(getTweet,;
 			//console.log("query sent successfully");
 		}
 	});
@@ -167,9 +172,10 @@ function getTweet(){
 		url:"/tweet",
 		datatype: "json",
 		success: function(data){
-			response = data.data;
-			console.log(response);
-			refreshDOM();
+			//response = data.data;
+			console.log(data.data);
+			//refreshDOM();
+			refreshDOM(data.data);
 		},
 		error: function(msg){
 			console.log("error:" + msg);

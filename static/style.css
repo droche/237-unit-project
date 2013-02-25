@@ -31,3 +31,20 @@ body{
 	margin: 10px;
 	z-index: 3;
 }
+
+#tweet-header{
+	font-size: 20px;
+	
+	width: 100%;
+	position: fixed;
+	top: 0;
+	
+	margin-bottom: 10px;
+	display: block;
+	background-color: white;
+}
+
+#tweetcontainer{
+	
+	margin-top: 30px;
+}

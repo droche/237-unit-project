@@ -14,6 +14,7 @@ app.get("/static/:filename", function(request, response){
 var requestQuery;
 var lastTweet = 0;
 var tweets;
+var dummyData = ["a","b","c","d","e","f","g","h","a","b","c","d","e","f","g","h"];
 
 var fsclientId = "VU0DICU13IR5L5YWZ23OGBCIMSUA2CCQILVXMV2QRQGRGKHN";
 var fsclientSecret = "3UB2V5MNWB0QUCGNA5DDIH05YU0BSOOE0DI05GISLLWWGN0D";
@@ -165,9 +166,9 @@ app.post('/new', function(request, response){
 
 
 app.get('/tweet', function(request, response){
-
+	
 	response.send({
-		data: tweets,
+		data: dummyData.pop(),
 		success: (tweets !== undefined)
 	});
 });
