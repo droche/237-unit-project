@@ -109,7 +109,7 @@ function post(q){
 			"query": q
 		},
 		success: function(data){
-			console.log("post success " + data);
+			console.log(data.data);
 		}
 	});
 }
