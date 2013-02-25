@@ -109,6 +109,28 @@ var radius;
 		sendQuery($("#query-input").val(),radiusStart.lat(),radiusStart.lng(),radius);
 		console.log(radius);
 		
+		
+		var tweetLocationsLong = [];
+		var tweetLocationsLat = [];
+		//for now
+		//create random points based on dom
+		//convert points to 
+		var tweetsPixel = [];
+		
+		for (var i = 0; i < 50; i++) {
+			//push values to tweetLocations array			
+			tweetsPixel.push(new google.maps.Point(
+			Math.random()* $(document).width(),
+			Math.random()* $(document).height()
+			));
+			
+		}
+		
+		
+		
+		console.log(tweetsPixel);
+		//console.log(new google.maps.Point(8, 8));
+		
 	};
 	zoomChanged.prototype = new google.maps.OverlayView();
 	//Called on the intiial pageload.
@@ -221,16 +243,54 @@ var radius;
 			};
 		})();
 	
+
+		
+		
+		//tweet animation
+		//replace with array of tweets coming from server
+		var tweetsLength = 50;
+		var tweets= [];
+		
+	
+		function tweetCircle (x, y) {
+			//change to input
+			this.x = x;
+			this.y = y;
+			this.radius = 5;
+		}
+		
+		function createTweets () {
+			for (var i = 0; i < tweetsLength; i++) {
+				//push based on location lat and long
+				tweets.push(new tweetCircle (
+				Math.floor(Math.random()*myCanvas.width), 	
+				Math.floor(Math.random()*myCanvas.height)));
+			}
+		}
+		
+		function drawTweets(ctx, myCanvas, rad) {
+			var radius = rad;
+			//while (radius > 1) {
+			if (radius > 0) {	
+				for (var i = 0; i < tweets.length; i++) {
+					tweet = tweets[i];
+					ctx.beginPath();
+					ctx.fillStyle = "rgba(255, 255, 255," + 0.5 + ")";
+					ctx.arc(tweet.x, tweet.y, radius, 0, 2 * Math.PI, false);
+					ctx.fill();
+					//ctx.stroke();
+				}
+			}
+		} 
+		
+		createTweets ();
+		console.log(tweets);
 	
 		//draw shit
 		var centerRingOpacity = 0.02;
 		var crossHairsOpacity = 0.5;	
 		var direction = 1;	
 		var rotation = 1;
-		
-		function createTweet(x, y){
-			
-		}
 		
 		function animate() {	
 			//var mapRange = radius;
@@ -240,7 +300,8 @@ var radius;
 			context.clearRect(0, 0, myCanvas.width, myCanvas.height);
 			
 			// DRAW			
-					
+			drawTweets(context, myCanvas, centerRingOpacity * 20);
+						
 			//ungualte transparency				
 			centerRingOpacity += 0.009 * direction;
 			if (centerRingOpacity >= 1) {
@@ -257,8 +318,9 @@ var radius;
 				context.arc(myCanvas.width/2, myCanvas.height/2, myCanvas.width/3, 0, 2 * Math.PI, false);
 			context.stroke();
 			
-			
-			//save and resotre for rotation
+					
+			/*
+			//rotating cirlce
 			context.save();
 				context.translate(myCanvas.width / 2, myCanvas.height / 2);
 	      		rotation++;
@@ -267,9 +329,7 @@ var radius;
 					context.arc(0, 0,  myCanvas.width/3 - 5, 1.1 * Math.PI, 1.9 * Math.PI, false);
 				context.stroke();
 			context.restore();			
-			
-
-		
+			*/	
 			
 			//draw cross hairs
 			context.beginPath();
@@ -287,7 +347,7 @@ var radius;
 				context.lineTo(myCanvas.width/2, myCanvas.height/2 + 10);
 			context.stroke();
 			
-			
+						
 			canvasContainer.appendChild(myCanvas);		
 			// request new frame
 			requestAnimFrame(function() {
