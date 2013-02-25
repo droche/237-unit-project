@@ -118,6 +118,7 @@ var map;
 		var mapOptions = {
 			zoom: startZoom,
 			center: startLocation,
+			disableDefaultUI: true,
 			mapTypeControlOptions: { mapTyapeIds: [google.maps.MapTypeId.ROADMAP, 'map_style']}
 		};       
 		

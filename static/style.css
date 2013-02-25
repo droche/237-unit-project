@@ -4,7 +4,6 @@ body{
 }
 
 .sidebar{
-	width: 29%;
 	position: fixed;
 	z-index: 3;
 	right: 0;
@@ -14,20 +13,58 @@ body{
 	background-color: white;
 }
 
+/*tweet container*/
 .main{
+	margin-top: 10px;
+	margin-left: 12px;
 	position: fixed;
 	z-index: 3;
 	width: 20%;
-	height: 100%;
-	background-color: white;
+	height: 97.5%;
+	background-color: rgba(0,0,0,0.5);
 	overflow:scroll;
+	font-family: 'Source Code Pro', sans-serif; font-weight: 200; 
+	
 }
 
 .row{
 	width: 100%;
 }
 
+h1 {
+	color: #00e6ff;
+	font-family: 'Source Code Pro', sans-serif; font-weight: 700; 
+}
+
+/*tweets*/
 .main ul li{
 	margin: 10px;
 	z-index: 3;
+	color: white;
+	font-size: small;
+	border-top: 1px dotted #00e6ff;
+	border-bottom: 1px dotted #8a8a8a; 
 }
+
+
+
+
+/*
+
+.main ul li{
+	margin: 10px;
+	z-index: 3;
+	color: white;
+}
+
+.main{
+	position: fixed;
+	z-index: 3;
+	width: 20%;
+	height: 100%;
+	background-color: rgba(0,0,0,0.5);
+	overflow:scroll;
+}
+*/
+
+
