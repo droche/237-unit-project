@@ -4,9 +4,9 @@ canvas {
 }
 
 #latlng-control {
-	background: #ffc;
-	border: 1px solid #444444;
-	font-family: arial, helvetica, sans-serif;
+	background: rgba(0,0,0,0.2);
+	color: white;
+	font-family: 'Source Code Pro', sans-serif; font-weight: 200; 
 	font-size: 0.7em;
 	padding: 2px 4px;
 	position: absolute;

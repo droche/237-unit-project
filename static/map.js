@@ -8,9 +8,11 @@ Initialize the map object from the body tag's onload event.
 $('document').ready(function() {
 
 //gloabals vars
-var pixelLocationX;
-var pixelLocationY;
+
 var map;
+var radiusStart;
+var radius;
+
 	 /*
 	LatLngControl class displays the LatLng and pixel coordinates
 	underneath the mouse within a container anchored to it.
@@ -66,22 +68,24 @@ var map;
 		this.node_.style.top = point.y + this.ANCHOR_OFFSET_.y + 'px';
 		// Update control to display latlng and coordinates.
 		this.node_.innerHTML = [
-		latLng.toUrlValue(4),
+		'lat + lng',
 		'<br/>',
-		point.x,
-		'px, ',
-		point.y,
-		'px'
+		latLng.toUrlValue(4),
+		//point.x,
+		//'px, ',
+		//point.y,
+		//'px'
+		
 		].join('');
 		
 		//get radious of the window container		
-		var cordinates = this.getProjection().fromContainerPixelToLatLng(new google.maps.Point(point.x, point.y));
+		//var cordinates = this.getProjection().fromContainerPixelToLatLng(new google.maps.Point(point.x, point.y));
 		//console.log('test: ' + cordinates);
 		//calculate radius of screen
-		var center = map.getCenter();
+		//var center = map.getCenter();
 		//console.log("center: " + center);
 		//console.log("point lat long: " + latLng);
-		var distance = google.maps.geometry.spherical.computeDistanceBetween(center, latLng);
+		//var distance = google.maps.geometry.spherical.computeDistanceBetween(center, latLng);
 		//console.log(distance);
 	};
 	
@@ -97,8 +101,8 @@ var map;
 
 		var radiusEnd = overlay.getProjection().fromContainerPixelToLatLng(new google.maps.Point(radiusEndX, radiusEndY));
 		//create radius start point
-		var radiusStart = map.getCenter();
-		var radius = google.maps.geometry.spherical.computeDistanceBetween(radiusStart, radiusEnd);
+		radiusStart = map.getCenter();
+		radius = google.maps.geometry.spherical.computeDistanceBetween(radiusStart, radiusEnd);
 		//This will work for the zoom, but will need to add a check that the keyword is setActive
 		//also will need to set up a way to store the lat long so if the submit button is pressed the
 		//lat and long will be passed....also need to have a start lat and lng
@@ -217,36 +221,73 @@ var map;
 			};
 		})();
 	
-		var count = 1;
-		var opacity = 0;
+	
 		//draw shit
+		var centerRingOpacity = 0.02;
+		var crossHairsOpacity = 0.5;	
+		var direction = 1;	
+		var rotation = 1;
+		
+		function createTweet(x, y){
+			
+		}
+		
 		function animate() {	
-			if (count > 500) {
-				count = 1;
-			}
-			if(opacity < 1) {
-				opacity += 0.005;
-			} else {
-				opacity = 0;
-			}
+			//var mapRange = radius;
+			//console.log(mapRange);
 			
-			// update
-			
-			// clear
+			// CLEAR
 			context.clearRect(0, 0, myCanvas.width, myCanvas.height);
 			
-			// draw shit yo
-
-			opacity = 0;
-			context.fillStyle = "rgba(255, 255, 255," + opacity + ")";
-			
-			context.fillRect(0,0, myCanvas.width, myCanvas.height);
-			context.beginPath();	  
-			context.strokeStyle='rgba(255,255,255, 0.7)';  // a green line
-			context.lineWidth= 0.75;                       // 4 pixels thickness
-			context.moveTo(myCanvas.width/2, myCanvas.height/2);
-			context.lineTo(pixelLocationX + count, pixelLocationY + count++);
+			// DRAW			
+					
+			//ungualte transparency				
+			centerRingOpacity += 0.009 * direction;
+			if (centerRingOpacity >= 1) {
+				direction = -1;
+				
+			}
+			if (centerRingOpacity <= 0) {
+				direction = 1;
+			}
+			//draw center rings
+			context.lineWidth = 1;
+			context.strokeStyle= "rgba(0, 230, 255," + centerRingOpacity + ")";
+			context.beginPath();
+				context.arc(myCanvas.width/2, myCanvas.height/2, myCanvas.width/3, 0, 2 * Math.PI, false);
 			context.stroke();
+			
+			
+			//save and resotre for rotation
+			context.save();
+				context.translate(myCanvas.width / 2, myCanvas.height / 2);
+	      		rotation++;
+	      		context.rotate((Math.PI / 180) * rotation);
+				context.beginPath();
+					context.arc(0, 0,  myCanvas.width/3 - 5, 1.1 * Math.PI, 1.9 * Math.PI, false);
+				context.stroke();
+			context.restore();			
+			
+
+		
+			
+			//draw cross hairs
+			context.beginPath();
+				context.lineWidth = 1;
+				//context.setLineDash([1,2]);
+				context.strokeStyle = "rgba(0, 230, 255," + crossHairsOpacity + ")";
+				context.moveTo(myCanvas.width/2 - 10, myCanvas.height/2);
+				context.lineTo(myCanvas.width/2 + 10, myCanvas.height/2);
+			context.stroke();
+			
+			context.beginPath();
+				context.lineWidth = 1;
+				context.strokeStyle = "rgba(0, 230, 255," + crossHairsOpacity + ")";
+				context.moveTo(myCanvas.width/2, myCanvas.height/2 - 10);
+				context.lineTo(myCanvas.width/2, myCanvas.height/2 + 10);
+			context.stroke();
+			
+			
 			canvasContainer.appendChild(myCanvas);		
 			// request new frame
 			requestAnimFrame(function() {
