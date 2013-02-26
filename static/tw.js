@@ -174,12 +174,16 @@ function sendQuery(keyword, lat, lon, radius){
 		},
 		datatype: "json",
 		success: function(data){
+<<<<<<< HEAD
 		//NEED TO HAVE IT COUNT ON THE SERVER HOW MANY IT HAS SENT SO THAT WHEN IT RUNS 
 		//OUT IT AUTO MAKES ANOTHER REQUEST
 			if(tweetInterval !== "undefined"){
 				clearInterval(tweetInterval);
 			}
 			tweetInterval = setInterval(getTweet,1500);
+=======
+			//setInterval(getTweet,;
+>>>>>>> adding-sessions
 			//console.log("query sent successfully");
 		}
 	});
@@ -188,7 +192,7 @@ function sendQuery(keyword, lat, lon, radius){
 function getTweet(){
 	$.ajax({
 		type: "get",
-		url:"/tweet",
+		url:"/tweet" ,
 		datatype: "json",
 		success: function(data){
 			//response = data.data;

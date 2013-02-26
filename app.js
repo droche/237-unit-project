@@ -7,6 +7,12 @@ app.use(express.bodyParser());
 var http = require('http'),
 	https = require('https');
 
+app.use(express.cookieParser());
+app.use(express.cookieSession({
+	key: "sid",
+	secret: "tweets"
+}));
+
 app.get("/static/:filename", function(request, response){
 	response.sendfile("static/" + request.params.filename);
 });
@@ -164,14 +170,23 @@ app.get('/venues/search', function(request, response){
 
 
 app.post('/new', function(request, response){
+	console.log("COOOOOOOOOOOOOOOOOOOOOOOOOOOOOOKIEEEEEEEEEEEESSSSSSSSSS!!!!!");
+	console.log(request.cookies);
+	console.log("Sessions!!!!!");
+	console.log(request.session);
+	request.session.visitCount = request.session.visitCount ? request.session.visitCount + 1 : 1;
+    console.log('You have visited this page ' + request.session.visitCount + ' times');
 	var tq = new TweetQuery(
 		request.body.keyword,
 		request.body.lat,
 		request.body.lon,
 		request.body.radius
 		);
+<<<<<<< HEAD
 	lastTweetObj = tq;//GET RID OF THIS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	console.log(tq.radius+"<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+=======
+>>>>>>> adding-sessions
 	tweetGetter(tq, function(str){
 		console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		parseData(str);
@@ -189,6 +204,7 @@ app.post('/new', function(request, response){
 
 
 app.get('/tweet', function(request, response){
+<<<<<<< HEAD
 	tweetCount++; //GET RID OF THISS!!!!!!!!!!!!!!!!!!!
 	if(tweetCount >= 179){
 		tweetGetter(lastTweetObj, function(str){
@@ -197,6 +213,14 @@ app.get('/tweet', function(request, response){
 		});
 	}
 	
+=======
+	console.log("COOOOOOOOOOOOOOOOOOOOOOOOOOOOOOKIEEEEEEEEEEEESSSSSSSSSS!!!!!");
+	console.log(request.cookies);
+	console.log("Sessions!!!!!");
+	console.log(request.session);
+	request.session.visitCount = request.session.visitCount ? request.session.visitCount + 1 : 1;
+    console.log('You have visited this page ' + request.session.visitCount + ' times');
+>>>>>>> adding-sessions
 	response.send({
 <<<<<<< HEAD
 		data: tweetList,
@@ -210,7 +234,7 @@ app.get('/tweet', function(request, response){
 
 
 function parseData(str){
-	console.log(str);
+	//console.log(str);
 	tweets = JSON.parse(str);
 	lastTweet = tweets.max_id_str;
 	for(var tweet in tweets.results){
