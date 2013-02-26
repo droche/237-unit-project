@@ -7,6 +7,12 @@ app.use(express.bodyParser());
 var http = require('http'),
 	https = require('https');
 
+app.use(express.cookieParser());
+app.use(express.cookieSession({
+	key: "sid",
+	secret: "tweets"
+}));
+
 app.get("/static/:filename", function(request, response){
 	response.sendfile("static/" + request.params.filename);
 });
@@ -146,27 +152,36 @@ app.get('/venues/search', function(request, response){
 
 
 app.post('/new', function(request, response){
+	console.log("COOOOOOOOOOOOOOOOOOOOOOOOOOOOOOKIEEEEEEEEEEEESSSSSSSSSS!!!!!");
+	console.log(request.cookies);
+	console.log("Sessions!!!!!");
+	console.log(request.session);
+	request.session.visitCount = request.session.visitCount ? request.session.visitCount + 1 : 1;
+    console.log('You have visited this page ' + request.session.visitCount + ' times');
 	var tq = new TweetQuery(
 		request.body.keyword,
 		request.body.lat,
 		request.body.lon,
 		request.body.radius
 		);
-		
-	console.log(tq.radius+"<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
 	tweetGetter(tq, function(str){
 		console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		parseData(str);
 		response.send({
 			//data: parseData(str),
 			success: (str !== undefined)
-		});	
+		});
 	});
 });
 
 
 app.get('/tweet', function(request, response){
-	
+	console.log("COOOOOOOOOOOOOOOOOOOOOOOOOOOOOOKIEEEEEEEEEEEESSSSSSSSSS!!!!!");
+	console.log(request.cookies);
+	console.log("Sessions!!!!!");
+	console.log(request.session);
+	request.session.visitCount = request.session.visitCount ? request.session.visitCount + 1 : 1;
+    console.log('You have visited this page ' + request.session.visitCount + ' times');
 	response.send({
 		data: dummyData.pop(),
 		success: (tweets !== undefined)
@@ -176,7 +191,7 @@ app.get('/tweet', function(request, response){
 
 
 function parseData(str){
-	console.log(str);
+	//console.log(str);
 	tweets = JSON.parse(str);
 	lastTweet = tweets.max_id_str;
 	//return tweets;

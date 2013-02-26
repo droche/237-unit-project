@@ -160,7 +160,7 @@ function sendQuery(keyword, lat, lon, radius){
 		},
 		datatype: "json",
 		success: function(data){
-			setInterval(getTweet,;
+			//setInterval(getTweet,;
 			//console.log("query sent successfully");
 		}
 	});
@@ -169,7 +169,7 @@ function sendQuery(keyword, lat, lon, radius){
 function getTweet(){
 	$.ajax({
 		type: "get",
-		url:"/tweet",
+		url:"/tweet" ,
 		datatype: "json",
 		success: function(data){
 			//response = data.data;
