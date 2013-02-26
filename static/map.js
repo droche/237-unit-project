@@ -110,7 +110,7 @@ var point;
 		//also will need to set up a way to store the lat long so if the submit button is pressed the
 		//lat and long will be passed....also need to have a start lat and lng
 		sendQuery($("#query-input").val(),radiusStart.lat(),radiusStart.lng(),radius);
-		console.log(radius);
+		//console.log(radius);
 		
 		
 		/*
@@ -160,10 +160,10 @@ var point;
 		overlay.draw = function(){};
 		overlay.setMap(map);		
 		var nyLatLng = new google.maps.LatLng(40.7697, -73.9735);
-		console.log(nyLatLng);
+		//console.log(nyLatLng);
 		nyPxl = overlay.getProjection().fromLatLngToContainerPixel(nyLatLng);
 		mapZoom = map.getZoom();
-		console.log(mapZoom);		
+		//console.log(mapZoom);		
 	}
 	updateCanvas.prototype = new google.maps.OverlayView();
 	
@@ -323,12 +323,15 @@ var point;
 		} 
 		
 		createTweets ();
-		console.log(tweets);
+		
 	
 		//draw shit
-		var centerRingOpacity = 0.02;
+		var centerRingOpacity = [0.02, 0.8, 0.4]; 
+		
+		//var centerRingOpacity2 = 0.8;
+		
 		var crossHairsOpacity = 0.3;	
-		var direction = 1;	
+		var direction = [1, 1, 1];	
 		var rotation = 1;
 		
 		function animate() {	
@@ -352,21 +355,24 @@ var point;
 			//animation circle test	
 			drawTweets(context, myCanvas, centerRingOpacity * 20);
 						
-			//ungualte transparency				
-			centerRingOpacity += 0.009 * direction;
-			if (centerRingOpacity >= 1) {
-				direction = -1;				
+			//ungualte transparency	
+			for (var i = 0; i < centerRingOpacity.length; i++) {			
+				centerRingOpacity[i] += 0.009 * direction[i];
+				if (centerRingOpacity[i] >= 1) {
+					direction[i] = -1;				
+				}
+				if (centerRingOpacity[i] <= 0) {
+					direction[i] = 1;
+				}
 			}
-			if (centerRingOpacity <= 0) {
-				direction = 1;
-			}
+			console.log(centerRingOpacity[0]);
 			
 			if (point != undefined) {
 					//draw center rings
 					context.lineWidth = 1;
-					context.strokeStyle= "rgba(0, 230, 255," + centerRingOpacity + ")";
+					context.strokeStyle= "rgba(0, 230, 255," + centerRingOpacity[0] + ")";
 					context.beginPath();
-						context.arc(point.x, point.y, myCanvas.width/3.5, 0, 2 * Math.PI, false);
+						context.arc(point.x, point.y, myCanvas.width/4, 0, 2 * Math.PI, false);
 					context.stroke();
 				}
 			
@@ -376,9 +382,21 @@ var point;
 		      		rotation++;
 		      		context.rotate((Math.PI / 180) * rotation);
 					context.beginPath();
-						context.arc(0, 0,  myCanvas.width/3.5 - 5, 1.1 * Math.PI, 1.9 * Math.PI, false);
+						context.strokeStyle= "rgba(0, 230, 255," + centerRingOpacity[1] + ")";
+						context.arc(0, 0,  myCanvas.width/4 - 5, 1.1 * Math.PI, 1.9 * Math.PI, false);
 					context.stroke();
 				context.restore();			
+				
+				context.save();
+					context.translate(point.x, point.y);
+		      		rotation++;
+		      		context.rotate((Math.PI / 180) * rotation * -1);
+					context.beginPath();
+						context.strokeStyle= "rgba(0, 230, 255," + centerRingOpacity[2] + ")";
+						context.arc(0, 0,  myCanvas.width/4 - 10, 1.1 * Math.PI, 1.9 * Math.PI, false);
+					context.stroke();
+				context.restore();						
+				
 				
 				
 				//draw cross hairs
