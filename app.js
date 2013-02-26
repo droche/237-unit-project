@@ -23,8 +23,8 @@ var tweetList = [];
 var tweetCount = 0;
 var lastTweetObj;
 
-var userCount = 0;
-
+var uCount = 0;
+var users = [];
 var tweetList = [];
 
 var fsclientId = "VU0DICU13IR5L5YWZ23OGBCIMSUA2CCQILVXMV2QRQGRGKHN";
@@ -33,11 +33,11 @@ var fsclientSecret = "3UB2V5MNWB0QUCGNA5DDIH05YU0BSOOE0DI05GISLLWWGN0D";
 var twclientId = "Bt2qpXMrCsbctcTSwxVU8Q";
 var twclientSecret = "j2EweBmhK7cknxr3WvIAZLl1SjVs7YmDKd0k66okVdA";
 
-function User(id, tweets, lat, lng){
+function User(id, tweets){
 	this.id = id;
 	this.tweets = tweets;
-	this.lat = lat;
-	this.lng = lng;
+	//this.lat = lat;
+	//this.lng = lng;
 }
 
 function Tweet(id, text, username, image, geo){
@@ -45,6 +45,8 @@ function Tweet(id, text, username, image, geo){
 	this.text = text;
 	this.username = username;
 	this.image = image;
+	this.geo = geo;
+	this.uid = uid;
 }
 
 function TweetQuery(keyword, lat, lon, radius){
@@ -177,10 +179,11 @@ app.post('/new', function(request, response){
 	console.log(request.session);
 	if(request.session.uid === undefined){
 		request.session.uid = userCount + 1;
+		users.push(new User(request.session.uid, undefined));
+		userCount++;
 	}
 	else{}
-	
-    console.log('You have visited this page ' + request.session.visitCount + ' times');
+	console.log('You have visited this page ' + request.session.visitCount + ' times');
 	var tq = new TweetQuery(
 		request.body.keyword,
 		request.body.lat,
@@ -191,9 +194,9 @@ app.post('/new', function(request, response){
 	console.log(tq.radius+"<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
 	tweetGetter(tq, function(str){
 		console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-		parseData(str);
+		parseData(str, user);
 		response.send({
-			data: tweetList,
+			data: users[request.session.uid].tweets,
 			//data: tweetList,
 			success: (str !== undefined)
 		});
@@ -206,7 +209,7 @@ app.get('/tweet', function(request, response){
 	if(tweetCount >= 179){
 		tweetGetter(lastTweetObj, function(str){
 			console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-			parseData(str);
+			parseData(str, user);
 		});
 	}
 
@@ -214,7 +217,12 @@ app.get('/tweet', function(request, response){
 	console.log(request.cookies);
 	console.log("Sessions!!!!!");
 	console.log(request.session);
-	request.session.visitCount = request.session.visitCount ? request.session.visitCount + 1 : 1;
+	if(request.session.uid === undefined){
+		request.session.uid = userCount + 1;
+		users.push(new User(request.session.uid, undefined));
+		userCount++;
+	}
+	else{}
     console.log('You have visited this page ' + request.session.visitCount + ' times');
 	
 	response.send({
@@ -225,13 +233,15 @@ app.get('/tweet', function(request, response){
 
 
 
-function parseData(str){
+function parseData(str, user){
 	//console.log(str);
 	tweets = JSON.parse(str);
 	lastTweet = tweets.max_id_str;
 	for(var tweet in tweets.results){
 		tweetList[tweet] = new Tweet(tweets.results[tweet].id_str, tweets.results[tweet].text, tweets.results[tweet].from_user_name, tweets.results[tweet].profile_image_url,tweets.results[tweet].geo);
 	}
+	users[user.id].tweets = tweetList;
+
 	//return tweets;
 }
 

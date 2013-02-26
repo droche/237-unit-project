@@ -161,7 +161,7 @@ function sendQuery(keyword, lat, lon, radius){
 		},
 		datatype: "json",
 		success: function(data){
-		//NEED TO HAVE IT COUNT ON THE SERVER HOW MANY IT HAS SENT SO THAT WHEN IT RUNS 
+		//NEED TO HAVE IT COUNT ON THE SERVER HOW MANY IT HAS SENT SO THAT WHEN IT RUNS
 		//OUT IT AUTO MAKES ANOTHER REQUEST
 			if(tweetInterval !== "undefined"){
 				clearInterval(tweetInterval);
