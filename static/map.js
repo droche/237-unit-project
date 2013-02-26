@@ -16,7 +16,7 @@ var radius;
 //for animation
 var nyPxl;
 var mapZoom;
-
+var point;
 	 /*
 	LatLngControl class displays the LatLng and pixel coordinates
 	underneath the mouse within a container anchored to it.
@@ -60,11 +60,10 @@ var mapZoom;
 	LatLngControl.prototype.updatePosition = function(latLng) {
 		var projection = this.getProjection();
 		//console.log(projection);
-		var point = projection.fromLatLngToContainerPixel(latLng);
+		point = projection.fromLatLngToContainerPixel(latLng);
 		//console.log(this);
 		//assign the locations to the global scope
-		pixelLocationX = point.x; 
-		pixelLocationY = point.y;
+
 		//debugging function for console;
 		//displayCordinates(pixelLocationX, pixelLocationY);
 		// Update control position to be anchored next to mouse position.
@@ -200,6 +199,7 @@ var mapZoom;
 		});
 		google.maps.event.addListener(map, 'mousemove', function(mEvent) {
 			latLngControl.updatePosition(mEvent.latLng);
+			updateCanvas ();
 		});
 		
 		//listener for idle
@@ -327,7 +327,7 @@ var mapZoom;
 	
 		//draw shit
 		var centerRingOpacity = 0.02;
-		var crossHairsOpacity = 0.5;	
+		var crossHairsOpacity = 0.3;	
 		var direction = 1;	
 		var rotation = 1;
 		
@@ -347,7 +347,7 @@ var mapZoom;
 				context.beginPath();
 					context.arc(nyPxl.x, nyPxl.y, mapZoom * 10, 0, 2 * Math.PI, false);
 				context.stroke();
-			}
+			
 			
 			//animation circle test	
 			drawTweets(context, myCanvas, centerRingOpacity * 20);
@@ -355,48 +355,48 @@ var mapZoom;
 			//ungualte transparency				
 			centerRingOpacity += 0.009 * direction;
 			if (centerRingOpacity >= 1) {
-				direction = -1;
-				
+				direction = -1;				
 			}
 			if (centerRingOpacity <= 0) {
 				direction = 1;
 			}
-			//draw center rings
-			context.lineWidth = 1;
-			context.strokeStyle= "rgba(0, 230, 255," + centerRingOpacity + ")";
-			context.beginPath();
-				context.arc(myCanvas.width/2, myCanvas.height/2, myCanvas.width/3, 0, 2 * Math.PI, false);
-			context.stroke();
 			
-					
+			if (point != undefined) {
+					//draw center rings
+					context.lineWidth = 1;
+					context.strokeStyle= "rgba(0, 230, 255," + centerRingOpacity + ")";
+					context.beginPath();
+						context.arc(point.x, point.y, myCanvas.width/3.5, 0, 2 * Math.PI, false);
+					context.stroke();
+				}
 			
-			//rotating cirlce
-			context.save();
-				context.translate(myCanvas.width / 2, myCanvas.height / 2);
-	      		rotation++;
-	      		context.rotate((Math.PI / 180) * rotation);
+				//rotating cirlce
+				context.save();
+					context.translate(point.x, point.y);
+		      		rotation++;
+		      		context.rotate((Math.PI / 180) * rotation);
+					context.beginPath();
+						context.arc(0, 0,  myCanvas.width/3.5 - 5, 1.1 * Math.PI, 1.9 * Math.PI, false);
+					context.stroke();
+				context.restore();			
+				
+				
+				//draw cross hairs
 				context.beginPath();
-					context.arc(0, 0,  myCanvas.width/3 - 5, 1.1 * Math.PI, 1.9 * Math.PI, false);
+					context.lineWidth = 1;
+					//context.setLineDash([1,2]);
+					context.strokeStyle = "rgba(0, 230, 255," + crossHairsOpacity + ")";
+					context.moveTo(point.x - 20, point.y);
+					context.lineTo(point.x + 20, point.y);
 				context.stroke();
-			context.restore();			
-			
-			
-			//draw cross hairs
-			context.beginPath();
-				context.lineWidth = 1;
-				//context.setLineDash([1,2]);
-				context.strokeStyle = "rgba(0, 230, 255," + crossHairsOpacity + ")";
-				context.moveTo(myCanvas.width/2 - 10, myCanvas.height/2);
-				context.lineTo(myCanvas.width/2 + 10, myCanvas.height/2);
-			context.stroke();
-			
-			context.beginPath();
-				context.lineWidth = 1;
-				context.strokeStyle = "rgba(0, 230, 255," + crossHairsOpacity + ")";
-				context.moveTo(myCanvas.width/2, myCanvas.height/2 - 10);
-				context.lineTo(myCanvas.width/2, myCanvas.height/2 + 10);
-			context.stroke();
-			
+				
+				context.beginPath();
+					context.lineWidth = 1;
+					context.strokeStyle = "rgba(0, 230, 255," + crossHairsOpacity + ")";
+					context.moveTo(point.x, point.y - 20);
+					context.lineTo(point.x, point.y + 20);
+				context.stroke();
+			}
 						
 			canvasContainer.appendChild(myCanvas);		
 			// request new frame
