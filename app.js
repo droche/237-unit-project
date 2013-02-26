@@ -13,14 +13,23 @@ app.get("/static/:filename", function(request, response){
 
 var requestQuery;
 var lastTweet = 0;
-var tweets;
-var dummyData = ["a","b","c","d","e","f","g","h","a","b","c","d","e","f","g","h"];
+var tweetList = [];
+var tweetCount = 0;
+var lastTweetObj;
 
 var fsclientId = "VU0DICU13IR5L5YWZ23OGBCIMSUA2CCQILVXMV2QRQGRGKHN";
 var fsclientSecret = "3UB2V5MNWB0QUCGNA5DDIH05YU0BSOOE0DI05GISLLWWGN0D";
 
 var twclientId = "Bt2qpXMrCsbctcTSwxVU8Q";
 var twclientSecret = "j2EweBmhK7cknxr3WvIAZLl1SjVs7YmDKd0k66okVdA";
+
+function Tweet(id, text, username, image, geo){
+	this.id = id;
+	this.text = text;
+	this.username = username;
+	this.image = image;
+	this.geo = geo;
+}
 
 function TweetQuery(keyword, lat, lon, radius){
 	this.keyword = keyword;
@@ -49,7 +58,7 @@ function tweetGetter(tq, callBack2){
 	
 	var options = {
 		host: 'search.twitter.com',
-		path: "/search.json?q=" + encodeURI(tq.keyword) + "&result_type=mixed&rpp=100&geocode=" + tq.lat + "," + tq.lon + "," + tq.radius + "km",//",25mi",
+		path: "/search.json?q=" + encodeURI(tq.keyword) + "&result_type=mixed&rpp=180&geocode=" + tq.lat + "," + tq.lon + "," + tq.radius + "km",//",25mi",
 		//path: "/search.json?q=from:BarackObama&rpp=100",
 		method: 'GET',
 		headers: {
@@ -152,24 +161,32 @@ app.post('/new', function(request, response){
 		request.body.lon,
 		request.body.radius
 		);
-		
+	lastTweetObj = tq;//GET RID OF THIS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	console.log(tq.radius+"<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
 	tweetGetter(tq, function(str){
 		console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		parseData(str);
+
 		response.send({
-			//data: parseData(str),
+			//data: tweetList,
 			success: (str !== undefined)
-		});	
+		});
 	});
 });
 
 
 app.get('/tweet', function(request, response){
+	tweetCount++; //GET RID OF THISS!!!!!!!!!!!!!!!!!!!
+	if(tweetCount >= 179){
+		tweetGetter(lastTweetObj, function(str){
+			console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+			parseData(str);
+		});
+	}
 	
 	response.send({
-		data: dummyData.pop(),
-		success: (tweets !== undefined)
+		data: tweetList.pop(),
+		success: (tweetList !== undefined)
 	});
 });
 
@@ -179,8 +196,9 @@ function parseData(str){
 	console.log(str);
 	tweets = JSON.parse(str);
 	lastTweet = tweets.max_id_str;
-	//return tweets;
-	
+	for(var tweet in tweets.results){
+		tweetList[tweet] = new Tweet(tweets.results[tweet].id_str, tweets.results[tweet].text, tweets.results[tweet].from_user_name, tweets.results[tweet].profile_image_url,tweets.results[tweet].geo);
+	}	
 }
 
 app.post('/search', function(request, response){

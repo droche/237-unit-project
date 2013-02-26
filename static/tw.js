@@ -1,4 +1,5 @@
 var response;
+var tweetInterval;
 
 function Location(lat, lon){
 	this.lat = lat;
@@ -83,10 +84,10 @@ function refreshDOM(tweet){
 		// listItem.append(paraItem);
 		// $("#tweetcontainer").append(listItem);
 	//}
-	//var liEl = $("<li>").html(tweet.text);
-	var liEl = $("<li>").html(tweet);
-	//var userID = $("<h3>").html(tweet.from_user_name).css("font-weight","bold");
-	//liEl.append(userID);
+	var liEl = $("<li>").html(tweet.text);
+	var userID = $("<h3>").html(tweet.username).css("font-weight","bold");
+	var geoID = $("<h3>").html(tweet.geo).css("font-weight","bold");
+	liEl.append(userID).append(geoID);
 	$('#tweetcontainer').prepend(liEl);
 }
 
@@ -114,7 +115,7 @@ function post(q){
 			"query": q
 		},
 		success: function(data){
-			console.log("post success " + data);
+			console.log(data.data);
 		}
 	});
 }
@@ -160,7 +161,12 @@ function sendQuery(keyword, lat, lon, radius){
 		},
 		datatype: "json",
 		success: function(data){
-			setInterval(getTweet,;
+		//NEED TO HAVE IT COUNT ON THE SERVER HOW MANY IT HAS SENT SO THAT WHEN IT RUNS 
+		//OUT IT AUTO MAKES ANOTHER REQUEST
+			if(tweetInterval !== "undefined"){
+				clearInterval(tweetInterval);
+			}
+			tweetInterval = setInterval(getTweet,1500);
 			//console.log("query sent successfully");
 		}
 	});
@@ -173,7 +179,7 @@ function getTweet(){
 		datatype: "json",
 		success: function(data){
 			//response = data.data;
-			console.log(data.data);
+			//console.log(data.data);
 			//refreshDOM();
 			refreshDOM(data.data);
 		},
