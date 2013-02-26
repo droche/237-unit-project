@@ -8,24 +8,52 @@ body{
 }
 
 .sidebar{
-	width: 29%;
 	position: fixed;
 	z-index: 3;
+<<<<<<< HEAD
 <<<<<<< HEAD
 	right: 0;
 	top: 10em;
 	width: 8em;
 	margin-top: -2.5em;
 	background-color: white;
+=======
+    top:0;
+    right:0;
+	background-color: rgba(255,255,255,0.5);	
+	display:inline-block;
+    width: 550px;
+    height: 25px;
+    margin: 10px;
+    padding: 5px;
+    border: 1px dotted #00e6ff; 
+	font-family: 'Source Code Pro', sans-serif; font-weight: 400;    
+>>>>>>> origin/ui_elements
 }
 
+#submitButton {
+	border: none;
+	cursor: pointer;
+	background: #00e6ff; 
+	font-family: 'Source Code Pro', sans-serif; font-weight: 400;    
+
+}
+
+#submitButton:hover {
+	background: white; 
+}
+
+/*tweet container*/
 .main{
+	margin-top: 10px;
+	margin-left: 12px;
 	position: fixed;
 	z-index: 3;
 	width: 20%;
-	height: 100%;
-	background-color: white;
+	height: 97.5%;
+	background-color: rgba(0,0,0,0.5);
 	overflow:scroll;
+<<<<<<< HEAD
 =======
 }
 
@@ -34,16 +62,63 @@ body{
 	position: fixed;
 	z-index: 3;
 >>>>>>> hope this works!
+=======
+	font-family: 'Source Code Pro', sans-serif; font-weight: 200; 
+	padding-top: 30px;
+	padding: 5px;
+>>>>>>> origin/ui_elements
 }
 
 .row{
-	width: 100%;
+	/*width: 100%;*/
+	display: inline-block;
 }
+
+h1 {
+	position: fixed;
+	top: 10px;
+	color: #00e6ff;
+	font-family: 'Source Code Pro', sans-serif; font-weight: 700; 
+	padding: 5px;
+}
+
+
+/*tweets*/
+.main ul li{
+	margin: 1px;
+	z-index: 3;
+	color: white;
+	font-size: small;
+	border-top: 1px dotted #00e6ff;
+	border-bottom: 1px dotted #ffffff; 
+	padding: 5px;
+}
+
+.credits {
+	position: fixed;
+	z-index: 3;
+    right:0;
+    bottom:0;
+	background-color: rgba(0,0,0,0.4);	
+	color: #00e6ff;
+	display:inline-block;
+    width: 550px;
+    height: 20px;
+    margin-bottom: 20px;
+    padding: 5px;
+    font-family: 'Source Code Pro', sans-serif; font-weight: 200; 
+    float: right;
+
+}
+
+
+/*
 
 .main ul li{
 	margin: 10px;
 <<<<<<< HEAD
 	z-index: 3;
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 >>>>>>> hope this works!
@@ -67,3 +142,19 @@ body{
 	margin-top: 30px;
 >>>>>>> b9b7545f272e9d2eccc566d5c771f1e62ccce5ad
 }
+=======
+	color: white;
+}
+
+.main{
+	position: fixed;
+	z-index: 3;
+	width: 20%;
+	height: 100%;
+	background-color: rgba(0,0,0,0.5);
+	overflow:scroll;
+}
+*/
+
+
+>>>>>>> origin/ui_elements
