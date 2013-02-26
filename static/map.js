@@ -365,7 +365,7 @@ var point;
 					direction[i] = 1;
 				}
 			}
-			console.log(centerRingOpacity[0]);
+			//console.log(centerRingOpacity[0]);
 			
 			if (point != undefined) {
 					//draw center rings
