@@ -13,7 +13,9 @@ app.get("/static/:filename", function(request, response){
 
 var requestQuery;
 var lastTweet = 0;
-var tweets;
+var tweetList = [];
+var tweetCount = 0;
+var lastTweetObj;
 
 var tweetList = [];
 
@@ -23,11 +25,19 @@ var fsclientSecret = "3UB2V5MNWB0QUCGNA5DDIH05YU0BSOOE0DI05GISLLWWGN0D";
 var twclientId = "Bt2qpXMrCsbctcTSwxVU8Q";
 var twclientSecret = "j2EweBmhK7cknxr3WvIAZLl1SjVs7YmDKd0k66okVdA";
 
+<<<<<<< HEAD
 function Tweet(id, text, username, image){
+=======
+function Tweet(id, text, username, image, geo){
+>>>>>>> b9b7545f272e9d2eccc566d5c771f1e62ccce5ad
 	this.id = id;
 	this.text = text;
 	this.username = username;
 	this.image = image;
+<<<<<<< HEAD
+=======
+	this.geo = geo;
+>>>>>>> b9b7545f272e9d2eccc566d5c771f1e62ccce5ad
 }
 
 function TweetQuery(keyword, lat, lon, radius){
@@ -57,7 +67,7 @@ function tweetGetter(tq, callBack2){
 	
 	var options = {
 		host: 'search.twitter.com',
-		path: "/search.json?q=" + encodeURI(tq.keyword) + "&result_type=mixed&rpp=100&geocode=" + tq.lat + "," + tq.lon + "," + tq.radius + "km",//",25mi",
+		path: "/search.json?q=" + encodeURI(tq.keyword) + "&result_type=mixed&rpp=180&geocode=" + tq.lat + "," + tq.lon + "," + tq.radius + "km",//",25mi",
 		//path: "/search.json?q=from:BarackObama&rpp=100",
 		method: 'GET',
 		headers: {
@@ -160,14 +170,18 @@ app.post('/new', function(request, response){
 		request.body.lon,
 		request.body.radius
 		);
-		
+	lastTweetObj = tq;//GET RID OF THIS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	console.log(tq.radius+"<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
 	tweetGetter(tq, function(str){
 		console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		parseData(str);
 
 		response.send({
+<<<<<<< HEAD
 			data: tweetList,
+=======
+			//data: tweetList,
+>>>>>>> b9b7545f272e9d2eccc566d5c771f1e62ccce5ad
 			success: (str !== undefined)
 		});
 	});
@@ -175,9 +189,20 @@ app.post('/new', function(request, response){
 
 
 app.get('/tweet', function(request, response){
-
+	tweetCount++; //GET RID OF THISS!!!!!!!!!!!!!!!!!!!
+	if(tweetCount >= 179){
+		tweetGetter(lastTweetObj, function(str){
+			console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+			parseData(str);
+		});
+	}
+	
 	response.send({
+<<<<<<< HEAD
 		data: tweetList,
+=======
+		data: tweetList.pop(),
+>>>>>>> b9b7545f272e9d2eccc566d5c771f1e62ccce5ad
 		success: (tweetList !== undefined)
 	});
 });
@@ -189,10 +214,15 @@ function parseData(str){
 	tweets = JSON.parse(str);
 	lastTweet = tweets.max_id_str;
 	for(var tweet in tweets.results){
+<<<<<<< HEAD
 		tweetList[tweet] = new Tweet(tweets.results[tweet].id_str, tweets.results[tweet].text, tweets.results[tweet].from_user_name, tweets.results[tweet].profile_image_url);
 	}
 	//return tweets;
 	
+=======
+		tweetList[tweet] = new Tweet(tweets.results[tweet].id_str, tweets.results[tweet].text, tweets.results[tweet].from_user_name, tweets.results[tweet].profile_image_url,tweets.results[tweet].geo);
+	}	
+>>>>>>> b9b7545f272e9d2eccc566d5c771f1e62ccce5ad
 }
 
 app.post('/search', function(request, response){

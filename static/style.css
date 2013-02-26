@@ -44,6 +44,26 @@ body{
 	margin: 10px;
 <<<<<<< HEAD
 	z-index: 3;
+<<<<<<< HEAD
 =======
 >>>>>>> hope this works!
+=======
+}
+
+#tweet-header{
+	font-size: 20px;
+	
+	width: 100%;
+	position: fixed;
+	top: 0;
+	
+	margin-bottom: 10px;
+	display: block;
+	background-color: white;
+}
+
+#tweetcontainer{
+	
+	margin-top: 30px;
+>>>>>>> b9b7545f272e9d2eccc566d5c771f1e62ccce5ad
 }

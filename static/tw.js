@@ -1,4 +1,5 @@
 var response;
+var tweetInterval;
 
 function Location(lat, lon){
 	this.lat = lat;
@@ -54,8 +55,9 @@ function getLocation(){
 	return loc;
 }
 
-function refreshDOM(){
+function refreshDOM(tweet){
 	console.log("refreshDOM!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" );//+ response);
+<<<<<<< HEAD
 	$(response.results).each(function(i,tweet){
 		var liEl = $("<li>").html(tweet.text);
 		var userID = $("<h3>").html(tweet.from_user_name).css("font-weight","bold");
@@ -66,6 +68,14 @@ function refreshDOM(){
 		$('#tweetcontainer').append(liEl);
 >>>>>>> hope this works!
 	});
+=======
+	// $(response.results).each(function(i,tweet){
+		// var liEl = $("<li>").html(tweet.text);
+		// var userID = $("<h3>").html(tweet.from_user_name).css("font-weight","bold");
+		// liEl.append(userID);
+		// $('#tweetcontainer').prepend(liEl);
+	// });
+>>>>>>> b9b7545f272e9d2eccc566d5c771f1e62ccce5ad
 	//$("#tweetcontainer").append(response.results);
 	// var listItem;
 	// var paraItem;
@@ -87,6 +97,11 @@ function refreshDOM(){
 		// listItem.append(paraItem);
 		// $("#tweetcontainer").append(listItem);
 	//}
+	var liEl = $("<li>").html(tweet.text);
+	var userID = $("<h3>").html(tweet.username).css("font-weight","bold");
+	var geoID = $("<h3>").html(tweet.geo).css("font-weight","bold");
+	liEl.append(userID).append(geoID);
+	$('#tweetcontainer').prepend(liEl);
 }
 
 
@@ -159,7 +174,12 @@ function sendQuery(keyword, lat, lon, radius){
 		},
 		datatype: "json",
 		success: function(data){
-			getTweet();
+		//NEED TO HAVE IT COUNT ON THE SERVER HOW MANY IT HAS SENT SO THAT WHEN IT RUNS 
+		//OUT IT AUTO MAKES ANOTHER REQUEST
+			if(tweetInterval !== "undefined"){
+				clearInterval(tweetInterval);
+			}
+			tweetInterval = setInterval(getTweet,1500);
 			//console.log("query sent successfully");
 		}
 	});
@@ -171,9 +191,10 @@ function getTweet(){
 		url:"/tweet",
 		datatype: "json",
 		success: function(data){
-			response = data.data;
-			console.log(response);
-			refreshDOM();
+			//response = data.data;
+			//console.log(data.data);
+			//refreshDOM();
+			refreshDOM(data.data);
 		},
 		error: function(msg){
 			console.log("error:" + msg);
