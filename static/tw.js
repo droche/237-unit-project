@@ -57,25 +57,12 @@ function getLocation(){
 
 function refreshDOM(tweet){
 	console.log("refreshDOM!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" );//+ response);
-<<<<<<< HEAD
-	$(response.results).each(function(i,tweet){
-		var liEl = $("<li>").html(tweet.text);
-		var userID = $("<h3>").html(tweet.from_user_name).css("font-weight","bold");
-		liEl.append(userID);
-<<<<<<< HEAD
-		$('#tweetcontainer').prepend(liEl);
-=======
-		$('#tweetcontainer').append(liEl);
->>>>>>> hope this works!
-	});
-=======
 	// $(response.results).each(function(i,tweet){
 		// var liEl = $("<li>").html(tweet.text);
 		// var userID = $("<h3>").html(tweet.from_user_name).css("font-weight","bold");
 		// liEl.append(userID);
 		// $('#tweetcontainer').prepend(liEl);
 	// });
->>>>>>> b9b7545f272e9d2eccc566d5c771f1e62ccce5ad
 	//$("#tweetcontainer").append(response.results);
 	// var listItem;
 	// var paraItem;
@@ -174,16 +161,13 @@ function sendQuery(keyword, lat, lon, radius){
 		},
 		datatype: "json",
 		success: function(data){
-<<<<<<< HEAD
 		//NEED TO HAVE IT COUNT ON THE SERVER HOW MANY IT HAS SENT SO THAT WHEN IT RUNS 
 		//OUT IT AUTO MAKES ANOTHER REQUEST
 			if(tweetInterval !== "undefined"){
 				clearInterval(tweetInterval);
 			}
 			tweetInterval = setInterval(getTweet,1500);
-=======
 			//setInterval(getTweet,;
->>>>>>> adding-sessions
 			//console.log("query sent successfully");
 		}
 	});
