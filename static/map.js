@@ -358,7 +358,7 @@ var point;
 			//ungualte transparency	
 			for (var i = 0; i < centerRingOpacity.length; i++) {			
 				centerRingOpacity[i] += 0.009 * direction[i];
-				if (centerRingOpacity[i] >= 1) {
+				if (centerRingOpacity[i] >= 0.8) {
 					direction[i] = -1;				
 				}
 				if (centerRingOpacity[i] <= 0) {
@@ -372,9 +372,9 @@ var point;
 					context.lineWidth = 1;
 					context.strokeStyle= "rgba(0, 230, 255," + centerRingOpacity[0] + ")";
 					context.beginPath();
-						context.arc(point.x, point.y, myCanvas.width/4, 0, 2 * Math.PI, false);
+						context.arc(point.x, point.y, myCanvas.width/3, 0, 2 * Math.PI, false);
 					context.stroke();
-				}
+				
 			
 				//rotating cirlce
 				context.save();
@@ -383,7 +383,7 @@ var point;
 		      		context.rotate((Math.PI / 180) * rotation);
 					context.beginPath();
 						context.strokeStyle= "rgba(0, 230, 255," + centerRingOpacity[1] + ")";
-						context.arc(0, 0,  myCanvas.width/4 - 5, 1.1 * Math.PI, 1.9 * Math.PI, false);
+						context.arc(0, 0,  myCanvas.width/3 - 5, 1.1 * Math.PI, 1.9 * Math.PI, false);
 					context.stroke();
 				context.restore();			
 				
@@ -393,11 +393,11 @@ var point;
 		      		context.rotate((Math.PI / 180) * rotation * -1);
 					context.beginPath();
 						context.strokeStyle= "rgba(0, 230, 255," + centerRingOpacity[2] + ")";
-						context.arc(0, 0,  myCanvas.width/4 - 10, 1.1 * Math.PI, 1.9 * Math.PI, false);
+						context.arc(0, 0,  myCanvas.width/3 - 10, 1.1 * Math.PI, 1.9 * Math.PI, false);
 					context.stroke();
 				context.restore();						
 				
-				
+				}
 				
 				//draw cross hairs
 				context.beginPath();
