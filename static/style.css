@@ -6,13 +6,28 @@ body{
 .sidebar{
 	position: fixed;
 	z-index: 3;
-	right: 0;
-	top: 10em;
-	width: 8em;
-	margin-top: -2.5em;
-	background-color: rgba(255,255,255,0.4);
-	padding-top: 5%;
-	padding-bottom: 5%;
+    top:0;
+    right:0;
+	background-color: rgba(255,255,255,0.5);	
+	display:inline-block;
+    width: 550px;
+    height: 25px;
+    margin: 10px;
+    padding: 5px;
+    border: 1px dotted #00e6ff; 
+	font-family: 'Source Code Pro', sans-serif; font-weight: 400;    
+}
+
+#submitButton {
+	border: none;
+	cursor: pointer;
+	background: #00e6ff; 
+	font-family: 'Source Code Pro', sans-serif; font-weight: 400;    
+
+}
+
+#submitButton:hover {
+	background: white; 
 }
 
 /*tweet container*/
@@ -26,17 +41,23 @@ body{
 	background-color: rgba(0,0,0,0.5);
 	overflow:scroll;
 	font-family: 'Source Code Pro', sans-serif; font-weight: 200; 
-	
+	padding-top: 30px;
+	padding: 5px;
 }
 
 .row{
-	width: 100%;
+	/*width: 100%;*/
+	display: inline-block;
 }
 
 h1 {
+	position: fixed;
+	top: 10px;
 	color: #00e6ff;
 	font-family: 'Source Code Pro', sans-serif; font-weight: 700; 
+	padding: 5px;
 }
+
 
 /*tweets*/
 .main ul li{
@@ -49,7 +70,22 @@ h1 {
 	padding: 5px;
 }
 
+.credits {
+	position: fixed;
+	z-index: 3;
+    right:0;
+    bottom:0;
+	background-color: rgba(0,0,0,0.4);	
+	color: #00e6ff;
+	display:inline-block;
+    width: 550px;
+    height: 20px;
+    margin-bottom: 20px;
+    padding: 5px;
+    font-family: 'Source Code Pro', sans-serif; font-weight: 200; 
+    float: right;
 
+}
 
 
 /*

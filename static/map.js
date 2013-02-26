@@ -13,6 +13,10 @@ var map;
 var radiusStart;
 var radius;
 
+//for animation
+var nyPxl;
+var mapZoom;
+
 	 /*
 	LatLngControl class displays the LatLng and pixel coordinates
 	underneath the mouse within a container anchored to it.
@@ -110,6 +114,25 @@ var radius;
 		console.log(radius);
 		
 		
+		/*
+		//test functions 
+		var nyLatLng = new google.maps.LatLng(40.7697, -73.9735);
+		console.log(nyLatLng);
+		nyPxl = overlay.getProjection().fromLatLngToContainerPixel(nyLatLng);
+		mapZoom = map.getZoom();
+		console.log(mapZoom);
+		*/
+		
+		/*
+		var nyPxlObject = {
+			lat: nyPxl.lat(),
+			lng: nyPxl.lng()
+		}
+		console.log(nyPxlObject);
+		*/
+		
+		//another test
+		/*
 		var tweetLocationsLong = [];
 		var tweetLocationsLat = [];
 		//for now
@@ -125,15 +148,25 @@ var radius;
 			));
 			
 		}
-		
-		
-		
 		console.log(tweetsPixel);
-		//console.log(new google.maps.Point(8, 8));
-		
+		*/
 	};
 	zoomChanged.prototype = new google.maps.OverlayView();
 	//Called on the intiial pageload.
+	
+	function updateCanvas () {
+		//console.log("updateCanvas");
+		//test functions 
+		var overlay = new google.maps.OverlayView();
+		overlay.draw = function(){};
+		overlay.setMap(map);		
+		var nyLatLng = new google.maps.LatLng(40.7697, -73.9735);
+		console.log(nyLatLng);
+		nyPxl = overlay.getProjection().fromLatLngToContainerPixel(nyLatLng);
+		mapZoom = map.getZoom();
+		console.log(mapZoom);		
+	}
+	updateCanvas.prototype = new google.maps.OverlayView();
 	
 	function init() {
 		// Create a new StyledMapType object, passing it the array of styles,
@@ -173,8 +206,14 @@ var radius;
 		google.maps.event.addListener(map, 'idle', function(event) {
 			zoomChanged();			
 		});
-	
-
+		//listener for animation
+		google.maps.event.addListener(map, 'drag', function(event){
+			updateCanvas();			
+		});
+		google.maps.event.addListener(map, 'zoom_changed', function(event){
+			updateCanvas();
+		});	
+			
 		
 		/*	
 	  //zoom to location impliment later		      
@@ -248,7 +287,7 @@ var radius;
 		
 		//tweet animation
 		//replace with array of tweets coming from server
-		var tweetsLength = 50;
+		var tweetsLength = 10;
 		var tweets= [];
 		
 	
@@ -299,7 +338,18 @@ var radius;
 			// CLEAR
 			context.clearRect(0, 0, myCanvas.width, myCanvas.height);
 			
-			// DRAW			
+			// DRAW		
+			
+			//location test
+			if (nyPxl != undefined) {
+				context.lineWidth = 5;
+				context.strokeStyle= "rgba(0, 230, 255," + 1 + ")";
+				context.beginPath();
+					context.arc(nyPxl.x, nyPxl.y, mapZoom * 10, 0, 2 * Math.PI, false);
+				context.stroke();
+			}
+			
+			//animation circle test	
 			drawTweets(context, myCanvas, centerRingOpacity * 20);
 						
 			//ungualte transparency				
@@ -319,7 +369,7 @@ var radius;
 			context.stroke();
 			
 					
-			/*
+			
 			//rotating cirlce
 			context.save();
 				context.translate(myCanvas.width / 2, myCanvas.height / 2);
@@ -329,7 +379,7 @@ var radius;
 					context.arc(0, 0,  myCanvas.width/3 - 5, 1.1 * Math.PI, 1.9 * Math.PI, false);
 				context.stroke();
 			context.restore();			
-			*/	
+			
 			
 			//draw cross hairs
 			context.beginPath();
